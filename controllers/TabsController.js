@@ -3,7 +3,7 @@ const Tabs = require("../models/tabs");
 
 const createTab = async (req, res) => {
   try {
-      //define rules for validation
+    //define rules for validation
     const rules = {
       name: "required|string",
       description: "required|string",
@@ -47,7 +47,7 @@ const createTab = async (req, res) => {
 
 const updateTab = async (req, res) => {
   try {
-      //define rules for validation
+    //define rules for validation
     const rules = {
       name: "required|string",
       description: "required|string",
@@ -135,7 +135,7 @@ const deleteTab = async (req, res) => {
 
     return res.status(200).json({
       status: "success",
-      message: "Tab Deleted"
+      message: "Tab Deleted",
     });
   } catch (error) {
     console.log(error);
