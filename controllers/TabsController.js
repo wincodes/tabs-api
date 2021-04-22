@@ -3,6 +3,7 @@ const Tabs = require("../models/tabs");
 
 const createTab = async (req, res) => {
   try {
+      //define rules for validation
     const rules = {
       name: "required|string",
       description: "required|string",
@@ -11,6 +12,7 @@ const createTab = async (req, res) => {
 
     const validation = new Validator(req.body, rules);
 
+    //return error if validation fails
     if (validation.fails()) {
       return res.status(400).json({
         status: "failed",
@@ -21,6 +23,7 @@ const createTab = async (req, res) => {
 
     const { name, description, dataPoints } = req.body;
 
+    //create the tab
     const tab = new Tabs({
       name,
       description,
@@ -44,6 +47,7 @@ const createTab = async (req, res) => {
 
 const updateTab = async (req, res) => {
   try {
+      //define rules for validation
     const rules = {
       name: "required|string",
       description: "required|string",
@@ -52,6 +56,7 @@ const updateTab = async (req, res) => {
 
     const validation = new Validator(req.body, rules);
 
+    //return error if validation fails
     if (validation.fails()) {
       return res.status(400).json({
         status: "failed",
@@ -65,6 +70,7 @@ const updateTab = async (req, res) => {
 
     const tab = await Tabs.findById(tabId);
 
+    //return 404 if tab is not found
     if (tab === null) {
       return res.status(404).json({
         status: "failed",
@@ -72,12 +78,13 @@ const updateTab = async (req, res) => {
       });
     }
 
+    //update tab
     tab.name = name;
     tab.description = description;
     tab.dataPoints = dataPoints;
     await tab.save();
 
-    return res.status(201).json({
+    return res.status(200).json({
       status: "success",
       message: "Tab Updated",
       tab,
@@ -95,9 +102,9 @@ const getTabs = async (req, res) => {
   try {
     const tabs = await Tabs.find();
 
-    return res.status(201).json({
+    return res.status(200).json({
       status: "success",
-      message: "Tab Retrieved",
+      message: "Tabs Retrieved",
       tabs,
     });
   } catch (error) {
@@ -115,6 +122,7 @@ const deleteTab = async (req, res) => {
 
     const tab = await Tabs.findById(tabId);
 
+    //return 404 if tab is not found
     if (tab === null) {
       return res.status(404).json({
         status: "failed",
@@ -122,9 +130,10 @@ const deleteTab = async (req, res) => {
       });
     }
 
+    //delete tab
     await tab.delete();
 
-    return res.status(201).json({
+    return res.status(200).json({
       status: "success",
       message: "Tab Deleted"
     });
